@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Data Agent - Conversational Business Analytics</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="container">
+                <h1>AI Data Agent</h1>
+                <p class="app-subtitle">Conversational Business Analytics for Complex Databases</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="chat-layout">
+                    <!-- Left Panel - Database Schema -->
+                    <aside class="schema-panel">
+                        <div class="card">
+                            <div class="card__header">
+                                <h3>Database Schema</h3>
+                                <button class="btn btn--sm btn--outline" onclick="toggleSchema()">
+                                    <span id="schema-toggle">Show</span>
+                                </button>
+                            </div>
+                            <div class="card__body schema-content hidden" id="schema-content">
+                                <div class="schema-warning">
+                                    <p><strong>⚠️ Data Quality Issues Detected:</strong></p>
+                                    <ul>
+                                        <li>Poorly named tables and columns</li>
+                                        <li>Mixed data types</li>
+                                        <li>Missing values and inconsistent formatting</li>
+                                        <li>Unclear table relationships</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="table-schema">
+                                    <h4>tbl_001 (Sales Data)</h4>
+                                    <div class="schema-table">
+                                        <div class="schema-row header">
+                                            <span>Column</span>
+                                            <span>Type</span>
+                                            <span>Issues</span>
+                                        </div>
+                                        <div class="schema-row">
+                                            <span>id</span>
+                                            <span>INT</span>
+                                            <span>✓ Clean</span>
+                                        </div>
+                                        <div class="schema-row">
+                                            <span>col1</span>
+                                            <span>VARCHAR</span>
+                                            <span>⚠️ Unclear name (Product)</span>
+                                        </div>
+                                        <div class="schema-row">
+                                            <span>col2</span>
+                                            <span>DECIMAL</span>
+                                            <span>⚠️ Unclear name (Sales)</span>
+                                        </div>
+                                        <div class="schema-row">
+                                            <span>field_a</span>
+                                            <span>VARCHAR</span>
+                                            <span>⚠️ Generic name (Category)</span>
+                                        </div>
+                                        <div class="schema-row">
+                                            <span>misc_data</span>
+                                            <span>VARCHAR</span>
+                                            <span>⚠️ Mixed formats (Quarter)</span>
+                                        </div>
+                                        <div class="schema-row">
+                                            <span>dt</span>
+                                            <span>DATE</span>
+                                            <span>⚠️ Abbreviated name</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="table-schema">
+                                    <h4>customer_seg (Customer Data)</h4>
+                                    <div class="schema-table">
+                                        <div class="schema-row header">
+                                            <span>Column</span>
+                                            <span>Type</span>
+                                            <span>Issues</span>
+                                        </div>
+                                        <div class="schema-row">
+                                            <span>cust_id</span>
+                                            <span>VARCHAR</span>
+                                            <span>✓ Identifiable</span>
+                                        </div>
+                                        <div class="schema-row">
+                                            <span>segment</span>
+                                            <span>VARCHAR</span>
+                                            <span>❌ 33% NULL values</span>
+                                        </div>
+                                        <div class="schema-row">
+                                            <span>value_score</span>
+                                            <span>INT</span>
+                                            <span>✓ Clean numeric</span>
+                                        </div>
+                                        <div class="schema-row">
+                                            <span>region_code</span>
+                                            <span>VARCHAR</span>
+                                            <span>⚠️ Inconsistent codes</span>
+                                        </div>
+                                        <div class="schema-row">
+                                            <span>last_active</span>
+                                            <span>DATE</span>
+                                            <span>❌ Some NULL values</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- Center Panel - Chat Interface -->
+                    <div class="chat-panel">
+                        <div class="chat-container">
+                            <!-- Welcome Message -->
+                            <div class="chat-messages" id="chat-messages">
+                                <div class="message agent-message">
+                                    <div class="message-content">
+                                        <h4>Welcome to AI Data Agent! 🤖</h4>
+                                        <p>I'm here to help you analyze your business data through natural language queries. Despite the messy database schema with unclear column names and data quality issues, I can understand your intent and provide meaningful insights.</p>
+                                        <p><strong>What I can do:</strong></p>
+                                        <ul>
+                                            <li>Handle complex analytical questions</li>
+                                            <li>Work with poorly structured databases</li>
+                                            <li>Generate visualizations and insights</li>
+                                            <li>Clean and interpret messy data</li>
+                                        </ul>
+                                        <p>Try asking a question below or click on one of the sample questions!</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sample Questions -->
+                            <div class="sample-questions">
+                                <h4>Sample Questions:</h4>
+                                <div class="question-buttons">
+                                    <button class="btn btn--outline btn--sm sample-question" onclick="askSampleQuestion('What are our top performing products this quarter?')">
+                                        Top performing products
+                                    </button>
+                                    <button class="btn btn--outline btn--sm sample-question" onclick="askSampleQuestion('Which customer segments have the highest value scores?')">
+                                        Customer segment analysis
+                                    </button>
+                                    <button class="btn btn--outline btn--sm sample-question" onclick="askSampleQuestion('Show me sales trends by region')">
+                                        Sales trends by region
+                                    </button>
+                                    <button class="btn btn--outline btn--sm sample-question" onclick="askSampleQuestion('Analyze revenue distribution across categories')">
+                                        Revenue distribution
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Input Area -->
+                            <div class="chat-input-container">
+                                <div class="chat-input-wrapper">
+                                    <input type="text" id="chat-input" class="form-control chat-input" 
+                                           placeholder="Ask me anything about your business data..." 
+                                           onkeypress="handleKeyPress(event)">
+                                    <button class="btn btn--primary chat-send-btn" onclick="sendMessage()">
+                                        Send
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
